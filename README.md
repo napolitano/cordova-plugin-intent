@@ -24,7 +24,7 @@ window.plugins.intent.setNewIntentHandler(function (intent) {
 ```
 
 ```js
-var intent = window.plugins.intent.getCordovaIntent();
+var intent = window.plugins.intent.getCordovaIntent(successCallback, failureCallback);
 ```
 
 
