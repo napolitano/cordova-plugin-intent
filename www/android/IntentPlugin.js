@@ -37,6 +37,6 @@ module.exports = intentInstance;
 if (!window.plugins) {
     window.plugins = {};
 }
-if (!window.plugins.intentInstance) {
-    window.plugins.intentInstance = intentInstance;
+if (!window.plugins.intent) {
+    window.plugins.intent = intentInstance;
 }

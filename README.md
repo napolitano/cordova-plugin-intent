@@ -2,6 +2,8 @@
 
 Developed to make it easier beeing a "send"-target on Android platform. 
 
+**DONT USE IT NOW - DEVELOPMENT IN PROGRESS - VISIT In A FEW DAYS**
+
 ## Installation
 
 Add the plugin to your project using Cordova CLI:
