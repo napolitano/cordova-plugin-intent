@@ -55,7 +55,7 @@ public class IntentPlugin extends CordovaPlugin {
      * @param data
      * @param context
      */
-    public boolean getCordovaIntent (final action, final JSONArray data, final CallbackContext context) {
+    public boolean getCordovaIntent (final JSONArray data, final CallbackContext context) {
         if(data.length() != 0) {
             context.sendPluginResult(new PluginResult(PluginResult.Status.INVALID_ACTION));
             return false;
@@ -73,7 +73,7 @@ public class IntentPlugin extends CordovaPlugin {
      * @param context
      * @return
      */
-    public boolean setNewIntentHandler (final action, final JSONArray data, final CallbackContext context) {
+    public boolean setNewIntentHandler (final JSONArray data, final CallbackContext context) {
         if(data.length() != 1) {
             context.sendPluginResult(new PluginResult(PluginResult.Status.INVALID_ACTION));
             return false;
