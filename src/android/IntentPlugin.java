@@ -2,6 +2,8 @@ package com.napolitano.cordova.plugin.intent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.lang.reflect.Method;
+import java.util.Iterator;
 
 import org.apache.cordova.CordovaActivity;
 import org.json.JSONArray;
@@ -11,6 +13,7 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.Html;
+import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -61,8 +64,17 @@ public class IntentPlugin extends CordovaPlugin {
             return false;
         }
 
-        JSONObject intentJSON = new JSONObject(cordova.getActivity().getIntent());
-        context.sendPluginResult(new PluginResult(PluginResult.Status.OK, intentJSON));
+        JSONObject intentJSON = null;
+
+        try {
+            intentJSON = new JSONObject();
+            intentJSON.put("intent", cordova.getActivity().getIntent());
+        } catch (JSONException e) {
+            context.sendPluginResult(new PluginResult(PluginResult.Status.INVALID_ACTION));
+            return false;
+        }
+
+        context.sendPluginResult(new PluginResult(PluginResult.Status.OK, intentJSON.toString()));
         return true;
     }
 
@@ -91,8 +103,17 @@ public class IntentPlugin extends CordovaPlugin {
     @Override
     public void onNewIntent(Intent intent) {
         if (this.onNewIntentCallbackContext != null) {
-            JSONObject intentJSON = new JSONObject(cordova.getActivity().getIntent());
-            PluginResult result = new PluginResult(PluginResult.Status.OK, intentJSON);
+
+            JSONObject intentJSON = null;
+
+            try {
+                intentJSON = new JSONObject();
+                intentJSON.put("intent", cordova.getActivity().getIntent());
+            } catch (JSONException e) {
+                return;
+            }
+
+            PluginResult result = new PluginResult(PluginResult.Status.OK, intentJSON.toString());
             result.setKeepCallback(true);
             this.onNewIntentCallbackContext.sendPluginResult(result);
         }
