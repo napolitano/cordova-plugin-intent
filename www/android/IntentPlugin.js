@@ -17,16 +17,12 @@ IntentPlugin.prototype.getCordovaIntent = function(successCallback, failureCallb
 IntentPlugin.prototype.setNewIntentHandler = function(method) {
     'use strict';
 
-    var defaults = {
-        method: method
-    };
-
     cordova.exec (
-        null,
+        method,
         null,
         "IntentPlugin",
         "setNewIntentHandler",
-        [defaults]
+        []
     );
 };
 
