@@ -121,19 +121,23 @@ Method passed will be triggered on new intent. Provides limited access to the ne
 #### Get cordova intent
 
 ```js
-window.plugins.intent.getCordovaIntent(function (Intent) {
-    console.log(Intent);
-}, function () {
-    console.log('Error');
-});
+document.addEventListener('deviceReady', function(){
+    window.plugins.intent.getCordovaIntent(function (Intent) {
+        console.log(Intent);
+    }, function () {
+        console.log('Error');
+    });
+}
 ```
 
 #### Handle new intent
 
 ```js
-window.plugins.intent.setNewIntentHandler(function (Intent) {
-    console.log(Intent);
-});
+document.addEventListener('deviceReady', function(){
+    window.plugins.intent.setNewIntentHandler(function (Intent) {
+        console.log(Intent);
+    });
+}
 ```
 
 ## Limitations
