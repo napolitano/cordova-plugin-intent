@@ -138,9 +138,9 @@ window.plugins.intent.setNewIntentHandler(function (Intent) {
 
 ## Limitations
 
-The plugin is a bare-bones implementation to help me with my projects. The intent passed to JavaScript is not a complete serialized object. The code should receive some refactorings and would benefit from a better JSON library like gson or similar. And at least more tests could be added and of course a iOS implementation to streamline JavaScript implementation.
+The plugin is a bare-bones implementation to help me with __my__ projects. The intent passed to JavaScript is not a complete serialized object. The code should receive some refactorings and would benefit from a better JSON library like gson or similar. Test would be nice too.
 
-# iOS Hint
+# iOS
 
 On iOS the method "window.handleOpenURL" is your friend. This method will be triggered if someone uses "Open in" to share content to your app.
 
@@ -167,7 +167,7 @@ window.handleOpenURL = function (url) {
 };
 ```
 
-In order to get this working and making your app a "Open in"-Target on iOS, you have to add some XML to your info.plist
+In order to get this working and make your app a "Open in"-Target on iOS, you have to add some XML to your info.plist
 
 ```xml
 <plist version="1.0">
@@ -211,8 +211,3 @@ In order to get this working and making your app a "Open in"-Target on iOS, you 
       </dict>
 </plist>    
 ```
-
-
-
-
-
