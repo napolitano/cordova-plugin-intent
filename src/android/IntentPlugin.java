@@ -80,6 +80,10 @@ public class IntentPlugin extends CordovaPlugin {
         }
 
         this.onNewIntentCallbackContext = context;
+
+        PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
+        result.setKeepCallback(true);
+        context.sendPluginResult(result);
         return true;
     }
 

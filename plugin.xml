@@ -27,7 +27,7 @@
         </config-file>
 
         <js-module src="www/android/IntentPlugin.js" name="IntentPlugin">
-            <clobbers target="intent" />
+            <clobbers target="IntentPlugin" />
         </js-module>
 
         <source-file src="src/android/IntentPlugin.java" target-dir="src/com/napolitano/cordova/plugin/intent" />
