@@ -1,4 +1,4 @@
-# Cordova Plugin for Android for accessing the Cordova Intent and handling onNewIntent (Android Only)
+# Cordova Plugin for accessing the Cordova Intent and handling onNewIntent (Android Only)
 
 This plugin allows you to add functionality for receiving content sent from other apps. To enable receiving sent content add the following XML to the MainActivity section of your AndroidManifest.xml
 
@@ -94,7 +94,7 @@ Method passed will be triggered on new intent. Provides limited access to the ne
 
 ### Supported Platforms
 
-- Android (>= API Level 19)
+- Android (>= API Level 19 / Kitkat)
 
 
 ### Basic example
