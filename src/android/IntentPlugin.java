@@ -115,25 +115,27 @@ public class IntentPlugin extends CordovaPlugin {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             clipData = intent.getClipData();
-            int clipItemCount = clipData.getItemCount();
-            items = new JSONObject[clipItemCount];
+            if(clipData != null) {
+                int clipItemCount = clipData.getItemCount();
+                items = new JSONObject[clipItemCount];
 
-            for (int i = 0; i < clipItemCount; i++) {
+                for (int i = 0; i < clipItemCount; i++) {
 
-                ClipData.Item item = clipData.getItemAt(i);
+                    ClipData.Item item = clipData.getItemAt(i);
 
-                try {
-                    items[i] = new JSONObject();
-                    items[i].put("htmlText", item.getHtmlText());
-                    items[i].put("intent", item.getIntent());
-                    items[i].put("text", item.getText());
-                    items[i].put("uri", item.getUri());
-                } catch (JSONException e) {
-                    Log.d(pluginName, pluginName + " Error thrown during intent > JSON conversion");
-                    Log.d(pluginName, e.getMessage());
-                    Log.d(pluginName, Arrays.toString(e.getStackTrace()));
+                    try {
+                        items[i] = new JSONObject();
+                        items[i].put("htmlText", item.getHtmlText());
+                        items[i].put("intent", item.getIntent());
+                        items[i].put("text", item.getText());
+                        items[i].put("uri", item.getUri());
+                    } catch (JSONException e) {
+                        Log.d(pluginName, pluginName + " Error thrown during intent > JSON conversion");
+                        Log.d(pluginName, e.getMessage());
+                        Log.d(pluginName, Arrays.toString(e.getStackTrace()));
+                    }
+
                 }
-
             }
         }
 
@@ -141,7 +143,9 @@ public class IntentPlugin extends CordovaPlugin {
             intentJSON = new JSONObject();
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                intentJSON.put("clipItems", new JSONArray(items));
+                if(items != null) {
+                    intentJSON.put("clipItems", new JSONArray(items));
+                }
             }
 
             intentJSON.put("type", intent.getType());
