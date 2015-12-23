@@ -136,3 +136,83 @@ window.plugins.intent.setNewIntentHandler(function (Intent) {
 });
 ```
 
+## Limitations
+
+The plugin is a bare-bones implementation to help me with my projects. The intent passed to JavaScript is not a complete serialized object. The code should receive some refactorings and would benefit from a better JSON library like gson or similar. And at least more tests could be added and of course a iOS implementation to streamline JavaScript implementation.
+
+# iOS Hint
+
+On iOS the method "window.handleOpenURL" is your friend. This method will be triggered if someone uses "Open in" to share content to your app.
+
+A basic implementation could look like:
+
+```js
+window.handleOpenURL = function (url) {
+    window.resolveLocalFileSystemURI (
+        url, 
+        function (fileEntry) {
+            fileEntry.file (
+                function (file) {
+                    console.log ('Successfully received file: ' + file.name);
+                },
+                function (error) {
+                    console.log (error);
+                }
+            )
+        }, 
+        function (error) {
+            console.log(error);
+        }
+    )
+};
+```
+
+In order to get this working and making your app a "Open in"-Target on iOS, you have to add some XML to your info.plist
+
+```xml
+<plist version="1.0">
+    <dict>
+  
+  <!-- whatever else -->
+  
+  
+    <key>UIFileSharingEnabled</key>
+    <true/>
+    
+    <key>CFBundleDocumentTypes</key>
+        <array>
+            <dict>
+                <key>CFBundleTypeIconFiles</key>
+                <array>
+                    <string>icon-small</string>
+                </array>
+                <key>CFBundleTypeName</key>
+                <string>${PRODUCT_NAME}</string>
+                <key>CFBundleTypeRole</key>
+                <string>Viewer</string>
+                <key>LSHandlerRank</key>
+                <string>Alternate</string>
+                <key>LSItemContentTypes</key>
+                <array>
+                    <string>public.data</string>
+                    <string>public.text</string>
+                    <string>public.image</string>
+                    <string>public.audio</string>
+                    <string>public.audiovisual-content</string>
+                    <string>public.xml</string>
+                    <string>public.movie</string>
+                    <string>public.font</string>
+                    <string>com.adobe.postscript</string>
+                    <string>com.adobe.pdf</string>
+                    <string>org.gnu.gnu-zip-archve</string>
+                </array>
+            </dict>
+        </array>
+      </dict>
+</plist>    
+```
+
+
+
+
+
