@@ -1,8 +1,58 @@
-# Cordova Plugin for Android to access intent (Android Only)
+# Cordova Plugin for Android for accessing the Cordova Intent and handling onNewIntent (Android Only)
 
-Developed to make it easier beeing a "send"-target on Android platform. 
+This plugin allows you to add functionality for receiving content sent from other apps. To enable receiving sent content add the following XML to the MainActivity section of your AndroidManifest.xml
 
-**DONT USE IT NOW - DEVELOPMENT IN PROGRESS - VISIT In A FEW DAYS**
+```xml
+<intent-filter>
+    <action android:name="android.intent.action.SEND" />
+    <action android:name="android.intent.action.SEND_MULTIPLE" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <data android:mimeType="*/*" />
+</intent-filter>
+```
+
+You can adjust the mime types your application accepts by defining them explicitly. The above example allows any mime type.
+
+The following example limits allowed mime types to JPG-Images. 
+
+```xml
+<intent-filter>
+    <action android:name="android.intent.action.SEND" />
+    <action android:name="android.intent.action.SEND_MULTIPLE" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <data android:mimeType="image/jpeg" />
+</intent-filter>
+```
+
+If you do not want to handle multiple files at once, you can remove the following tag:
+ 
+```xml
+<action android:name="android.intent.action.SEND_MULTIPLE" />
+```
+
+It is recommended to use a hook or the custom config plugin to ensure that the above XML will automatically added in case you want to have a fresh checkout or remove/add the platform.
+
+A very quick and much more dirty hook as ab example (tested on Mac OS-X, requires Ruby):
+
+```ruby
+#!/usr/bin/env ruby
+
+replace="
+            </intent-filter>
+            <intent-filter>
+                <action android:name='android.intent.action.SEND' />
+                <action android:name='android.intent.action.SEND_MULTIPLE'/>
+                <category android:name='android.intent.category.DEFAULT' />
+                <data android:mimeType='*/*' />
+    "
+
+filename = "platforms/android/AndroidManifest.xml"
+outdata = File.read(filename).gsub(/<category android\:name=\"android\.intent\.category\.LAUNCHER\" \/>([^<]*)<\/intent-filter>([^<]*)<\/activity>/, "<category android\:name=\"android\.intent\.category\.LAUNCHER\" \/>#{replace}<\/intent-filter><\/activity>")
+
+File.open(filename, 'w') do |out|
+    out << outdata
+end
+```
 
 ## Installation
 
@@ -11,6 +61,7 @@ Add the plugin to your project using Cordova CLI:
 ```bash
 cordova plugin add https://github.com/napolitano/cordova-plugin-intent
 ```
+
 Or using PhoneGap CLI:
 
 ```bash
@@ -43,9 +94,26 @@ Method passed will be triggered on new intent. Provides limited access to the ne
 
 ### Supported Platforms
 
-- Android
+- Android (>= API Level 19)
 
 
 ### Basic example
 
-Will be added ASAP. Sorry for now. Please do "console.log(window.plugins.intent.getCordovaIntent()) to get a basic idea of the intent object
+#### Get cordova intent
+
+```js
+window.plugins.intent.getCordovaIntent(function (Intent) {
+    console.log(Intent);
+}, function () {
+    console.log('Error');
+});
+```
+
+#### Handle new intent
+
+```js
+window.plugins.intent.onNewIntent(function (Intent) {
+    console.log(Intent);
+});
+```
+
