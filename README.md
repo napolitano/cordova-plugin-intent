@@ -32,7 +32,7 @@ If you do not want to handle multiple files at once, you can remove the followin
 
 It is recommended to use a hook or the custom config plugin to ensure that the above XML will automatically added in case you want to have a fresh checkout or remove/add the platform.
 
-A very quick and much more dirty hook as ab example (tested on Mac OS-X, requires Ruby):
+A very quick and much more dirty example hook (tested on Mac OS-X, requires Ruby):
 
 ```ruby
 #!/usr/bin/env ruby
@@ -112,7 +112,7 @@ window.plugins.intent.getCordovaIntent(function (Intent) {
 #### Handle new intent
 
 ```js
-window.plugins.intent.onNewIntent(function (Intent) {
+window.plugins.intent.setNewIntentHandler(function (Intent) {
     console.log(Intent);
 });
 ```
