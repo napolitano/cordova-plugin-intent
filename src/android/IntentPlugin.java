@@ -1,23 +1,20 @@
 package com.napolitano.cordova.plugin.intent;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.lang.reflect.Method;
-import java.util.Iterator;
+import java.util.Arrays;
+import java.util.Set;
 
-import org.apache.cordova.CordovaActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.ClipData;
 import android.content.Intent;
-import android.net.Uri;
-import android.text.Html;
+import android.os.Build;
 import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CordovaResourceApi;
 import org.apache.cordova.PluginResult;
 
 
@@ -44,7 +41,7 @@ public class IntentPlugin extends CordovaPlugin {
 
         try {
             Method method = this.getClass().getDeclaredMethod(action, params);
-            method.invoke(this, action, data, callbackContext);
+            method.invoke(this, data, callbackContext);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -64,17 +61,8 @@ public class IntentPlugin extends CordovaPlugin {
             return false;
         }
 
-        JSONObject intentJSON = null;
-
-        try {
-            intentJSON = new JSONObject();
-            intentJSON.put("intent", cordova.getActivity().getIntent());
-        } catch (JSONException e) {
-            context.sendPluginResult(new PluginResult(PluginResult.Status.INVALID_ACTION));
-            return false;
-        }
-
-        context.sendPluginResult(new PluginResult(PluginResult.Status.OK, intentJSON.toString()));
+        Intent intent = cordova.getActivity().getIntent();
+        context.sendPluginResult(new PluginResult(PluginResult.Status.OK, getIntentJson(intent)));
         return true;
     }
 
@@ -104,18 +92,70 @@ public class IntentPlugin extends CordovaPlugin {
     public void onNewIntent(Intent intent) {
         if (this.onNewIntentCallbackContext != null) {
 
-            JSONObject intentJSON = null;
-
-            try {
-                intentJSON = new JSONObject();
-                intentJSON.put("intent", cordova.getActivity().getIntent());
-            } catch (JSONException e) {
-                return;
-            }
-
-            PluginResult result = new PluginResult(PluginResult.Status.OK, intentJSON.toString());
+            PluginResult result = new PluginResult(PluginResult.Status.OK, getIntentJson(intent));
             result.setKeepCallback(true);
             this.onNewIntentCallbackContext.sendPluginResult(result);
+        }
+    }
+
+    /**
+     * Return JSON representation of intent attributes
+     *
+     * @param intent
+     * @return
+     */
+    private JSONObject getIntentJson(Intent intent) {
+        JSONObject intentJSON = null;
+        ClipData clipData = null;
+        JSONObject[] items = null;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            clipData = intent.getClipData();
+            int clipItemCount = clipData.getItemCount();
+            items = new JSONObject[clipItemCount];
+
+            for (int i = 0; i < clipItemCount; i++) {
+
+                ClipData.Item item = clipData.getItemAt(i);
+
+                try {
+                    items[i] = new JSONObject();
+                    items[i].put("htmlText", item.getHtmlText());
+                    items[i].put("intent", item.getIntent());
+                    items[i].put("text", item.getText());
+                    items[i].put("uri", item.getUri());
+                } catch (JSONException e) {
+                    Log.d(pluginName, pluginName + " Error thrown during intent > JSON conversion");
+                    Log.d(pluginName, e.getMessage());
+                    Log.d(pluginName, Arrays.toString(e.getStackTrace()));
+                }
+
+            }
+        }
+
+        try {
+            intentJSON = new JSONObject();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                intentJSON.put("clipItems", new JSONArray(items));
+            }
+
+            intentJSON.put("type", intent.getType());
+            intentJSON.put("extras", intent.getExtras());
+            intentJSON.put("action", intent.getAction());
+            intentJSON.put("categories", intent.getCategories());
+            intentJSON.put("flags", intent.getFlags());
+            intentJSON.put("component", intent.getComponent());
+            intentJSON.put("data", intent.getData());
+            intentJSON.put("package", intent.getPackage());
+
+            return intentJSON;
+        } catch (JSONException e) {
+            Log.d(pluginName, pluginName + " Error thrown during intent > JSON conversion");
+            Log.d(pluginName, e.getMessage());
+            Log.d(pluginName, Arrays.toString(e.getStackTrace()));
+
+            return null;
         }
     }
 

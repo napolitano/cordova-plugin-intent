@@ -46,6 +46,6 @@ Method passed will be triggered on new intent. Provides limited access to the ne
 - Android
 
 
-### Basic example: Send everything which was send to console.log to Answers
+### Basic example
 
 Will be added ASAP. Sorry for now. Please do "console.log(window.plugins.intent.getCordovaIntent()) to get a basic idea of the intent object
