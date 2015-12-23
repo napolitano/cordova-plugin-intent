@@ -80,6 +80,25 @@ window.plugins.intent.setNewIntentHandler(function (intent) {
 window.plugins.intent.getCordovaIntent(function (intent) {}, function () {});
 ```
 
+## Example Intent passed from plugin
+
+```json
+{
+    "action": "android.intent.action.SEND_MULTIPLE",
+    "clipItems": [
+        {
+            "uri": "file:///storage/emulated/0/Download/example-document.pdf"
+        },
+        {
+            "uri": "file:///storage/emulated/0/Download/example-archive.zip"
+        }
+    ],
+    "flags": 390070273,
+    "type": "*/*",
+    "component": "ComponentInfo{com.example.droid/com.example.droid.MainActivity}",
+    "extras": "Bundle[mParcelledData.dataSize=596]"
+}
+```
 
 ## Methods
 
