@@ -177,6 +177,13 @@ document.addEventListener('deviceReady', function(){
 
 The plugin is a bare-bones implementation to help me with __my__ projects. The intent passed to JavaScript is not a complete serialized object. The code should receive some refactorings and would benefit from a better JSON library like gson or similar. Test would be nice too.
 
+## Example App
+
+![Screenshot](/example/screenshot/screenshot.jpg?raw=true "Screenshot of Example App")
+
+An example app for Android (made with cordova 5.4.1) was added to the project. The app shows basic usage of the plugin. 
+
+
 # iOS
 
 On iOS the method "window.handleOpenURL" is your friend. This method will be triggered if someone uses "Open in" to share content to your app.
