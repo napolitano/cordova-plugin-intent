@@ -54,6 +54,13 @@ File.open(filename, 'w') do |out|
 end
 ```
 
+### Note
+
+By default the launch mode of the MainActivity of cordova based applications is set to "singleTop". This is ok for most situations. However you may prefer having the launch mode set to "singleTask" instead. Please read this article to get an idea about the different launch modes: https://www.mobomo.com/2011/06/android-understanding-activity-launchmode/
+ 
+Setting the launch mode to "singleTasks" ensures that your app cannot run in multiple instances as it might happen if launch mode is set to "singleTop" for example if your application is already running and you try to share a webpage from the browser to it.
+
+
 ## Installation
 
 Add the plugin to your project using Cordova CLI:
