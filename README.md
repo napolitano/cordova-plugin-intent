@@ -131,6 +131,8 @@ window.plugins.intent.getCordovaIntent(function (intent) {}, function () {});
 }
 ```
 
+While this example shows an JSON representation, you'll actually receive a ready-to-use object (of course with the attributes shown above).
+
 ## Methods
 
 ### getCordovaIntent() - Android
