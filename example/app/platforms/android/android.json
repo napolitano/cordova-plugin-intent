@@ -48,6 +48,6 @@
     ],
     "plugin_metadata": {
         "cordova-plugin-whitelist": "1.2.0",
-        "com.napolitano.cordova.plugin.intent": "0.1.1"
+        "com.napolitano.cordova.plugin.intent": "0.1.2"
     }
 }

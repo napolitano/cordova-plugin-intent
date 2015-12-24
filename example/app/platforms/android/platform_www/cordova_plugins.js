@@ -19,7 +19,7 @@ module.exports.metadata =
 // TOP OF METADATA
 {
     "cordova-plugin-whitelist": "1.2.0",
-    "com.napolitano.cordova.plugin.intent": "0.1.1"
+    "com.napolitano.cordova.plugin.intent": "0.1.2"
 }
 // BOTTOM OF METADATA
 });
