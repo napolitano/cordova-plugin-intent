@@ -22,7 +22,7 @@ IntentPlugin.prototype.setNewIntentHandler = function(method) {
         null,
         "IntentPlugin",
         "setNewIntentHandler",
-        []
+        [method]
     );
 };
 
