@@ -58,8 +58,32 @@ end
 
 By default the launch mode of the MainActivity of cordova based applications is set to "singleTop". This is ok for most situations. However you may prefer having the launch mode set to "singleTask" instead. Please read this article to get an idea about the different launch modes: https://www.mobomo.com/2011/06/android-understanding-activity-launchmode/
  
-Setting the launch mode to "singleTasks" ensures that your app cannot run in multiple instances as it might happen if launch mode is set to "singleTop" for example if your application is already running and you try to share a webpage from the browser to it.
+Setting the launch mode to "singleTask" ensures that your app cannot run in multiple instances as it might happen if launch mode is set to "singleTop" for example if your application is already running and you try to share a webpage from the browser to it.
 
+#### Example of MainActivity section in AndroidManifest.xml
+
+```xml
+<activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale" 
+          android:label="@string/activity_name" 
+          android:launchMode="singleTask" 
+          android:name="MainActivity" 
+          android:theme="@android:style/Theme.Holo.Light" 
+          android:windowSoftInputMode="adjustResize">
+          
+    <intent-filter android:label="@string/launcher_name">
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+    
+    <intent-filter>
+        <action android:name="android.intent.action.SEND" />
+        <action android:name="android.intent.action.SEND_MULTIPLE" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="*/*" />
+    </intent-filter>
+    
+</activity>
+```
 
 ## Installation
 
