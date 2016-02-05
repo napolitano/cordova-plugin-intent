@@ -118,11 +118,21 @@ window.plugins.intent.getCordovaIntent(function (intent) {}, function () {});
     "action": "android.intent.action.SEND_MULTIPLE",
     "clipItems": [
         {
-            "uri": "file:///storage/emulated/0/Download/example-document.pdf"
+            "uri": "file:///storage/emulated/0/Download/example-document.pdf",
+            "type": "application/pdf",
+            "extension": "pdf"
         },
         {
-            "uri": "file:///storage/emulated/0/Download/example-archive.zip"
+            "uri": "file:///storage/emulated/0/Download/example-archive.zip",
+            "type": "application/zip",
+            "extension": "zip"
         }
+        {
+            "uri": "content://media/external/images/media/29",
+            "type": "image/jpeg",
+            "extension": "jpeg"
+        }
+
     ],
     "flags": 390070273,
     "type": "*/*",
