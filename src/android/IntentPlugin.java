@@ -13,6 +13,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+import android.content.ContentResolver;
+import android.webkit.MimeTypeMap;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
@@ -112,7 +115,9 @@ public class IntentPlugin extends CordovaPlugin {
         JSONObject intentJSON = null;
         ClipData clipData = null;
         JSONObject[] items = null;
-
+        ContentResolver cR = this.cordova.getActivity().getApplicationContext().getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+                        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             clipData = intent.getClipData();
             if(clipData != null) {
@@ -129,6 +134,14 @@ public class IntentPlugin extends CordovaPlugin {
                         items[i].put("intent", item.getIntent());
                         items[i].put("text", item.getText());
                         items[i].put("uri", item.getUri());
+                        
+
+                        String type = cR.getType(item.getUri());
+                        String extension = mime.getExtensionFromMimeType(cR.getType(item.getUri()));
+
+                        items[i].put("type", type);
+                        items[i].put("extension", extension);
+                        
                     } catch (JSONException e) {
                         Log.d(pluginName, pluginName + " Error thrown during intent > JSON conversion");
                         Log.d(pluginName, e.getMessage());
