@@ -118,11 +118,21 @@ window.plugins.intent.getCordovaIntent(function (intent) {}, function () {});
     "action": "android.intent.action.SEND_MULTIPLE",
     "clipItems": [
         {
-            "uri": "file:///storage/emulated/0/Download/example-document.pdf"
+            "uri": "file:///storage/emulated/0/Download/example-document.pdf",
+            "type": "application/pdf",
+            "extension": "pdf"
         },
         {
-            "uri": "file:///storage/emulated/0/Download/example-archive.zip"
+            "uri": "file:///storage/emulated/0/Download/example-archive.zip",
+            "type": "application/zip",
+            "extension": "zip"
         }
+        {
+            "uri": "content://media/external/images/media/29",
+            "type": "image/jpeg",
+            "extension": "jpeg"
+        }
+
     ],
     "flags": 390070273,
     "type": "*/*",
@@ -176,6 +186,13 @@ document.addEventListener('deviceReady', function(){
 ## Limitations
 
 The plugin is a bare-bones implementation to help me with __my__ projects. The intent passed to JavaScript is not a complete serialized object. The code should receive some refactorings and would benefit from a better JSON library like gson or similar. Test would be nice too.
+
+## Example App
+
+![Screenshot](/example/screenshot/screenshot.jpg?raw=true "Screenshot of Example App")
+
+An example app for Android (made with cordova 5.4.1) was added to the project. The app shows basic usage of the plugin. 
+
 
 # iOS
 
