@@ -14,6 +14,7 @@ import android.os.Build;
 import android.util.Log;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.webkit.MimeTypeMap;
 
 import org.apache.cordova.CallbackContext;
