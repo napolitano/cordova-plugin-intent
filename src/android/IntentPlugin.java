@@ -136,12 +136,13 @@ public class IntentPlugin extends CordovaPlugin {
                         items[i].put("text", item.getText());
                         items[i].put("uri", item.getUri());
                         
-
-                        String type = cR.getType(item.getUri());
-                        String extension = mime.getExtensionFromMimeType(cR.getType(item.getUri()));
-
-                        items[i].put("type", type);
-                        items[i].put("extension", extension);
+                        if (item.getUri() != null) {
+                            String type = cR.getType(item.getUri());
+                            String extension = mime.getExtensionFromMimeType(cR.getType(item.getUri()));
+    
+                            items[i].put("type", type);
+                            items[i].put("extension", extension);
+                        }
                         
                     } catch (JSONException e) {
                         Log.d(pluginName, pluginName + " Error thrown during intent > JSON conversion");
