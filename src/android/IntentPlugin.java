@@ -1,5 +1,6 @@
 package com.napolitano.cordova.plugin.intent;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Set;
@@ -11,6 +12,7 @@ import org.json.JSONObject;
 import android.content.ClipData;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 
 import android.content.ContentResolver;
