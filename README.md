@@ -85,6 +85,14 @@ Setting the launch mode to "singleTask" ensures that your app cannot run in mult
 </activity>
 ```
 
+Cordova >= 6.0.0 apparently requires the launchMode to be set in ``config.xml`` as well:
+```xml
+<platform name="android">
+    ...
+    <preference name="AndroidLaunchMode" value="singleTask"/>
+</platform>
+```
+
 ## Installation
 
 Add the plugin to your project using Cordova CLI:
