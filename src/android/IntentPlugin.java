@@ -9,11 +9,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.provider.MediaStore;
+import android.database.Cursor;
 import android.content.ClipData;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.net.Uri;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -120,7 +123,7 @@ public class IntentPlugin extends CordovaPlugin {
         JSONObject[] items = null;
         ContentResolver cR = this.cordova.getActivity().getApplicationContext().getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
-                        
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             clipData = intent.getClipData();
             if(clipData != null) {
@@ -137,15 +140,15 @@ public class IntentPlugin extends CordovaPlugin {
                         items[i].put("intent", item.getIntent());
                         items[i].put("text", item.getText());
                         items[i].put("uri", item.getUri());
-                        
-                        if (item.getUri() != null) {
+
+                        if(item.getUri() != null) {
                             String type = cR.getType(item.getUri());
                             String extension = mime.getExtensionFromMimeType(cR.getType(item.getUri()));
-    
+
                             items[i].put("type", type);
                             items[i].put("extension", extension);
                         }
-                        
+
                     } catch (JSONException e) {
                         Log.d(pluginName, pluginName + " Error thrown during intent > JSON conversion");
                         Log.d(pluginName, e.getMessage());
@@ -166,6 +169,7 @@ public class IntentPlugin extends CordovaPlugin {
             }
 
             intentJSON.put("type", intent.getType());
+
             intentJSON.put("extras", toJsonObject(intent.getExtras()));
             intentJSON.put("action", intent.getAction());
             intentJSON.put("categories", intent.getCategories());
@@ -185,39 +189,64 @@ public class IntentPlugin extends CordovaPlugin {
     }
 
     private static JSONObject toJsonObject(Bundle bundle) {
-      try {
-        return (JSONObject) toJsonValue(bundle);
-      } catch (JSONException e) {
-        throw new IllegalArgumentException("Cannot convert bundle to JSON: " + e.getMessage(), e);
-      }
+        try {
+            return (JSONObject) toJsonValue(bundle);
+        } catch (JSONException e) {
+            throw new IllegalArgumentException("Cannot convert bundle to JSON: " + e.getMessage(), e);
+        }
     }
-  
+
     private static Object toJsonValue(final Object value) throws JSONException {
-      if (value == null) {
-        return null;
-      } else if (value instanceof Bundle) {
-        final Bundle bundle = (Bundle) value;
-        final JSONObject result = new JSONObject();
-        for (final String key : bundle.keySet()) {
-          result.put(key, toJsonValue(bundle.get(key)));
+        if (value == null) {
+            return null;
+        } else if (value instanceof Bundle) {
+            final Bundle bundle = (Bundle) value;
+            final JSONObject result = new JSONObject();
+            for (final String key : bundle.keySet()) {
+                result.put(key, toJsonValue(bundle.get(key)));
+            }
+            return result;
+        } else if (value.getClass().isArray()) {
+            final JSONArray result = new JSONArray();
+            int length = Array.getLength(value);
+            for (int i = 0; i < length; ++i) {
+                result.put(i, toJsonValue(Array.get(value, i)));
+            }
+            return result;
+        } else if (
+                value instanceof String
+                        || value instanceof Boolean
+                        || value instanceof Integer
+                        || value instanceof Long
+                        || value instanceof Double) {
+            return value;
+        } else {
+            return String.valueOf(value);
         }
-        return result;
-      } else if (value.getClass().isArray()) {
-        final JSONArray result = new JSONArray();
-        int length = Array.getLength(value);
-        for (int i = 0; i < length; ++i) {
-          result.put(i, toJsonValue(Array.get(value, i)));
+    }
+
+    public boolean getRealPathFromContentUrl(final JSONArray data, final CallbackContext context) {
+        if(data.length() != 1) {
+            context.sendPluginResult(new PluginResult(PluginResult.Status.INVALID_ACTION));
+            return false;
         }
-        return result;
-      } else if (
-          value instanceof String
-              || value instanceof Boolean
-              || value instanceof Integer
-              || value instanceof Long
-              || value instanceof Double) {
-        return value;
-      } else {
-        return String.valueOf(value);
-      }
-  }
+        ContentResolver cR = this.cordova.getActivity().getApplicationContext().getContentResolver();
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = cR.query(Uri.parse(data.getString(0)),  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+
+            context.sendPluginResult(new PluginResult(PluginResult.Status.OK, cursor.getString(column_index)));
+            return true;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+
+            context.sendPluginResult(new PluginResult(PluginResult.Status.INVALID_ACTION));
+            return false;
+        }
+    }
 }
