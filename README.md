@@ -119,6 +119,10 @@ window.plugins.intent.setNewIntentHandler(function (intent) {
 window.plugins.intent.getCordovaIntent(function (intent) {}, function () {});
 ```
 
+```js
+window.plugins.intent.getRealPathFromContentUrl(contentUrl, function (realPath) {}, function () {});
+```
+
 ## Example Intent passed from plugin
 
 ```json
@@ -156,6 +160,9 @@ While this example shows an JSON representation, you'll actually receive a ready
 ### getCordovaIntent() - Android
 Get limited access to intent properties
 
+### getRealPathFromContentUrl(contentUrl, successCallback, failureCallback) - Android
+Get the real path for the contentUrl
+
 ## Events
 
 ### setNewIntentHandler(method) - Android
@@ -178,6 +185,22 @@ document.addEventListener('deviceReady', function(){
     }, function () {
         console.log('Error');
     });
+}
+```
+
+#### Get real path from content URL
+
+```js
+document.addEventListener('deviceReady', function(){
+    window.plugins.intent.getRealPathFromContentUrl(
+        'content://media/external/images/media/81',
+        function (realPath) {
+            console.log(realPath);
+        }, 
+        function () {
+            console.log('Error');
+        }
+    );
 }
 ```
 
