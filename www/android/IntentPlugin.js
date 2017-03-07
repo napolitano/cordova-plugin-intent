@@ -36,8 +36,19 @@ IntentPlugin.prototype.getRealPathFromContentUrl = function(uri, successCallback
         'getRealPathFromContentUrl',
         [uri]
     );
+};
 
-}
+IntentPlugin.prototype.extractFileFromContentUrl = function(uri, successCallback, failureCallback) {
+    'use strict'
+
+    cordova.exec(
+        successCallback,
+        failureCallback,
+        'IntentPlugin',
+        'extractFileFromContentUrl',
+        [uri]
+    );
+};
 
 var intentInstance = new IntentPlugin();
 module.exports = intentInstance;

@@ -249,4 +249,76 @@ public class IntentPlugin extends CordovaPlugin {
             return false;
         }
     }
+    
+    public boolean extractFileFromContentUrl(final JSONArray data, final CallbackContext context) {
+        if (data.length() != 1) {
+            context.sendPluginResult(new PluginResult(PluginResult.Status.INVALID_ACTION));
+            return false;
+        }
+
+        Context appContext = this.cordova.getActivity().getApplicationContext();
+        // Get file name and size
+
+        Uri url;
+        File outputFile;
+        ContentResolver contentResolver = appContext.getContentResolver();
+        String fileName = null;
+        Long fileSize = null;
+        Cursor cursor = null;
+        try {
+            url = Uri.parse(data.getString(0));
+            String[] projection = {OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE};
+            cursor = contentResolver.query(url, projection, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                fileName = cursor.getString(0);
+                fileSize = cursor.getLong(1);
+            }
+
+            if (fileName == null) {
+                return sendInvalidResult(context);
+            }
+
+            outputFile = new File(appContext.getCacheDir(), fileName);
+
+            InputStream inputStream = null;
+            try {
+                inputStream = contentResolver.openInputStream(url);
+                OutputStream outputStream = null;
+                try {
+                    outputStream = new FileOutputStream(outputFile);
+                    byte[] buffer = new byte[4 * 1024];
+                    int read;
+
+                    while ((read = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, read);
+                    }
+                    outputStream.flush();
+                } finally {
+                    if (outputStream != null) {
+                        outputStream.close();
+                    }
+                }
+            }
+            finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            }
+
+        } catch (Exception e) {
+            return sendInvalidResult(context);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        context.sendPluginResult(new PluginResult(PluginResult.Status.OK, "file://" + outputFile.getAbsolutePath()));
+        return true;
+    }
+
+    private static boolean sendInvalidResult(CallbackContext context) {
+        context.sendPluginResult(new PluginResult(PluginResult.Status.INVALID_ACTION));
+        return false;
+    }
 }
