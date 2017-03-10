@@ -1,5 +1,9 @@
 package com.napolitano.cordova.plugin.intent;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -10,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.database.Cursor;
 import android.content.ClipData;
 import android.content.Intent;
