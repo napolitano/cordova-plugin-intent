@@ -23,6 +23,7 @@
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="IntentPlugin">
                 <param name="android-package" value="com.napolitano.cordova.plugin.intent.IntentPlugin"/>
+                <param name="onload" value="true" />
             </feature>
         </config-file>
 
