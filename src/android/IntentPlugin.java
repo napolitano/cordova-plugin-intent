@@ -31,7 +31,7 @@ public class IntentPlugin extends CordovaPlugin {
 
     private final String pluginName = "IntentPlugin";
     private CallbackContext onNewIntentCallbackContext = null;
-
+    private Intent startIntent = null;
     /**
      * Generic plugin command executor
      *
@@ -75,6 +75,11 @@ public class IntentPlugin extends CordovaPlugin {
         return true;
     }
 
+    public void onStart() {
+        Intent intent = cordova.getActivity().getIntent();
+        startIntent = intent;
+    }
+
     /**
      * Register handler for onNewIntent event
      *
@@ -89,7 +94,11 @@ public class IntentPlugin extends CordovaPlugin {
         }
 
         this.onNewIntentCallbackContext = context;
-
+        if (startIntent!=null)
+        {
+            onNewIntent(startIntent);
+            startIntent = null;
+        }
         PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
         result.setKeepCallback(true);
         context.sendPluginResult(result);
